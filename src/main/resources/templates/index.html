@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Life Stat</title>
+</head>
+<body>
+<h1 th:text="'Hi ' + ${user.name}"/>
+<h2>STATS</h2>
+<div th:each="stat: ${user.stats}">
+    <span th:text="${stat.name}"></span>:<input type="number" th:field="*{stat.value}" min="-10" max="10"><br>
+    <button type="submit">UPDATE</button>
+</div>
+<form action="/logout?_method=DELETE" method="POST">
+  <button type="submit">Log Out</button>
+</form>
+</body>
+</html>

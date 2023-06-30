@@ -1,0 +1,11 @@
+package com.nafrospec.lifestat;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class LifestatApplication {
+	public static void main(String[] args) {
+		SpringApplication.run(LifestatApplication.class, args);
+	}
+}
