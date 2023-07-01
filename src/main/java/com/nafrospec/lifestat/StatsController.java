@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/stat")
 public class StatsController {
     @Autowired
@@ -24,6 +23,8 @@ public class StatsController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @CrossOrigin
     @GetMapping(value = "", produces = "application/json")
     public ResponseEntity getUserStats(@AuthenticationPrincipal User user) {
         List<StatResponse> res = new ArrayList<>();
@@ -34,11 +35,13 @@ public class StatsController {
         return ResponseEntity.ok(res);
     }
 
+    @CrossOrigin
     @GetMapping(value = "/{id}", produces = "application/json")
     public @ResponseBody List<Stat> getStatsByUserId(@PathVariable(required = false) String id) {
         return statRepository.findByUserId(Integer.parseInt(id));
     }
 
+    @CrossOrigin
     @PostMapping(value = "/calculate", produces = "application/json")
     public ResponseEntity calculateStats(@AuthenticationPrincipal User user, @RequestBody Map<String, String> data) {
         final var knowledge = Integer.parseInt(data.get("knowledge"));
