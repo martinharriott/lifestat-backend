@@ -17,14 +17,14 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/stat")
+@RequestMapping(value = "/stat", produces = "application/json")
 public class StatsController {
     @Autowired
     private StatRepository statRepository;
 
     @Autowired
     private UserRepository userRepository;
-    @GetMapping(value = "", produces = "application/json")
+    @GetMapping(value = "")
     public ResponseEntity getUserStats(@AuthenticationPrincipal User user) {
         List<StatResponse> res = new ArrayList<>();
         final var stats = statRepository.findByUserId(user.getId());
@@ -34,12 +34,12 @@ public class StatsController {
         return ResponseEntity.ok(res);
     }
 
-    @GetMapping(value = "/{id}", produces = "application/json")
+    @GetMapping(value = "/{id}")
     public @ResponseBody List<Stat> getStatsByUserId(@PathVariable(required = false) String id) {
         return statRepository.findByUserId(Integer.parseInt(id));
     }
 
-    @PostMapping(value = "/calculate", produces = "application/json")
+    @PostMapping(value = "/calculate")
     public ResponseEntity calculateStats(@AuthenticationPrincipal User user, @RequestBody Map<String, String> data) {
         final var knowledge = Integer.parseInt(data.get("knowledge"));
         final var strength = Integer.parseInt(data.get("strength"));
