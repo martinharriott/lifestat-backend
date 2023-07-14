@@ -30,7 +30,6 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-@EnableWebSecurity
 public class SecurityConfiguration {
 
     @Autowired
@@ -46,7 +45,7 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors(Customizer.withDefaults())
+        http
                 .csrf().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)
@@ -58,9 +57,18 @@ public class SecurityConfiguration {
                 .requestMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .httpBasic();
+                .httpBasic(Customizer.withDefaults());
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.cors();
         return http.build();
+//        return http.cors().and()
+//                .csrf().disable()
+//                .authorizeHttpRequests((authorize) -> authorize
+//                        .requestMatchers("/", "/authenticate").permitAll()
+//                        .anyRequest().authenticated())
+//                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+//                .build();
     }
 
     @Bean
@@ -79,11 +87,9 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://martinharriott.github.io"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","HEAD","OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization"));
+        configuration.applyPermitDefaultValues();
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

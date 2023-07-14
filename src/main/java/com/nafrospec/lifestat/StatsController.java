@@ -17,7 +17,7 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin
-@RequestMapping(value = "/stat", produces = "application/json")
+@RequestMapping(value = "/stat", produces = "application/json", consumes = "application/json")
 public class StatsController {
     @Autowired
     private StatRepository statRepository;
